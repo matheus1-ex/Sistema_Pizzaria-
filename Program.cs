@@ -1,0 +1,71 @@
+using System.Text;
+using System.Text.Json.Serialization;
+using SistemaPizza.Data;
+using Microsoft.OpenApi;
+using Swashbuckle.AspNetCore;
+using SistemaPizza.Controllers;
+using SistemaPizza.DTOs;
+using SistemaPizza.Models;
+using Microsoft.EntityFrameworkCore;
+using SistemaPizza.Services;
+using SistemaPizza.Middleware;
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        //Conexão com o banco de dados (Sql Server)
+        string connection = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
+        builder.Services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlite(connection)
+        );
+
+        //Conversão de Enums para Strings
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        });
+
+        //Configuração do swagger
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen(system =>
+        {
+            system.SwaggerDoc("v0.5", new OpenApiInfo {Title = "Sistema Pizzaria v0.5", Version = "v0.5"});
+        });
+        //Injeção de dependência
+        builder.Services.AddScoped<IClienteService, ClienteService>();
+
+        var app = builder.Build();
+         Console.WriteLine($"O SQL Server está sendo gravado em {System.IO.Path.GetFullPath("sistemapizza.db")}");
+
+         using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            dbContext.Database.EnsureCreated();
+        }
+
+        //Middlewares
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(system =>
+            {
+               system.SwaggerEndpoint("/swagger/v0.5/swagger.json", "Sistema de Pizzaria - v0.5");
+               system.RoutePrefix = "swagger";
+            });
+        }
+
+        app.UseMiddleware<RequestLoggingMiddleware>();
+
+        app.UseRouting();
+        app.MapGet("/", () => Results.Redirect("/swagger"));
+        app.MapControllers();
+        app.Run();
+
+
+    }
+}
+
