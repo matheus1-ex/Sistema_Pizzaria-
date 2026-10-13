@@ -23,10 +23,6 @@ public class ContaController : ControllerBase
     )
     {
         var resposta = await _clienteService.LoginAsync(dto, cancellation);
-        if (resposta.status == StatusAtivo.Desativado)
-        {
-            return Unauthorized(resposta);
-        }
         return Ok(resposta);
     }
 

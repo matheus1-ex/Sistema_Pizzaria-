@@ -14,6 +14,7 @@ public sealed class ClienteDto
     public string Senha {get; set;} = string.Empty;
 
     [Required(ErrorMessage = "Telefone inválido.")]
+    [Phone(ErrorMessage = "Tipo de telefone inválido")]
     public string Telefone {get; set;} = string.Empty;
 
     [Required(ErrorMessage = "O Endereço é obrigatório")]

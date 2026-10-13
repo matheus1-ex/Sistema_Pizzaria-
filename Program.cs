@@ -2,7 +2,6 @@ using System.Text;
 using System.Text.Json.Serialization;
 using SistemaPizza.Data;
 using Microsoft.OpenApi;
-using Swashbuckle.AspNetCore;
 using SistemaPizza.Controllers;
 using SistemaPizza.DTOs;
 using SistemaPizza.Models;
@@ -10,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using SistemaPizza.Services;
 using SistemaPizza.Middleware;
 
-public class Program
+public partial class Program
 {
     public static void Main(string[] args)
     {
@@ -31,10 +30,7 @@ public class Program
 
         //Configuração do swagger
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen(system =>
-        {
-            system.SwaggerDoc("v0.5", new OpenApiInfo {Title = "Sistema Pizzaria v0.5", Version = "v0.5"});
-        });
+
         //Injeção de dependência
         builder.Services.AddScoped<IClienteService, ClienteService>();
 
@@ -48,15 +44,6 @@ public class Program
         }
 
         //Middlewares
-        if (app.Environment.IsDevelopment())
-        {
-            app.UseSwagger();
-            app.UseSwaggerUI(system =>
-            {
-               system.SwaggerEndpoint("/swagger/v0.5/swagger.json", "Sistema de Pizzaria - v0.5");
-               system.RoutePrefix = "swagger";
-            });
-        }
 
         app.UseMiddleware<RequestLoggingMiddleware>();
 

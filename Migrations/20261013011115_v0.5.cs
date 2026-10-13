@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SistemaPizza.Migrations
 {
     /// <inheritdoc />
-    public partial class v01 : Migration
+    public partial class v05 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,8 @@ namespace SistemaPizza.Migrations
                     Email = table.Column<string>(type: "TEXT", nullable: false),
                     SenhaHash = table.Column<string>(type: "TEXT", nullable: false),
                     Telefone = table.Column<string>(type: "TEXT", nullable: false),
-                    Endereco = table.Column<string>(type: "TEXT", nullable: false)
+                    Endereco = table.Column<string>(type: "TEXT", nullable: false),
+                    criadoEm = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

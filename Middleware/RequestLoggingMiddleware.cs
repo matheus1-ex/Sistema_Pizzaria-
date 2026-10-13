@@ -35,6 +35,7 @@ public sealed class RequestLoggingMiddleware
             var duracao = Stopwatch.GetElapsedTime(inicio);
             _logger.LogInformation
             (
+                "HTTP {Method} {Path} respondeu {StatusCode} em {Duracao}ms",
                 contexto.Request.Method,
                 contexto.Request.Path,
                 contexto.Response.StatusCode,

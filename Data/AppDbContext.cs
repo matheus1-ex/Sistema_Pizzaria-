@@ -28,5 +28,22 @@ public sealed class AppDbContext : DbContext
             }
         );
 
+        // ==============
+        // Cliente
+        // ==============
+        modelBuilder.Entity<Cliente>(
+            entidade =>
+            {
+                entidade.ToTable("Clientes");
+                entidade.HasKey(cliente => cliente.Id);
+                entidade.Property(cliente => cliente.Nome).IsRequired();
+                entidade.Property(cliente => cliente.Email).IsRequired();
+                entidade.Property(cliente => cliente.SenhaHash);
+                entidade.Property(cliente => cliente.Telefone).IsRequired();
+                entidade.Property(cliente => cliente.Endereco).IsRequired();
+                entidade.Property(cliente => cliente.criadoEm);
+            }
+        );
+
     }
 }

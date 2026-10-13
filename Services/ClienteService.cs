@@ -38,6 +38,7 @@ public sealed class ClienteService : IClienteService
             Nome = dto.Nome,
             Email = dto.Email,
             Endereco = dto.Endereco,
+            Telefone = dto.Telefone,
             SenhaHash = PassWordHash,
             criadoEm = DateTime.UtcNow,
         };
@@ -61,7 +62,7 @@ public sealed class ClienteService : IClienteService
     //Login
     public async Task<ClienteResponseDto> LoginAsync(ClienteDto dto, CancellationToken cancellation)
     {
-        var usuarioLogin = await _context.Clientes.Include(conta => conta.Email).FirstOrDefaultAsync(usr => usr.Email == dto.Email, cancellation);
+        var usuarioLogin = await _context.Contas.Include(conta => conta.cliente).FirstOrDefaultAsync(usr => usr.Email == dto.Email, cancellation);
 
         if (usuarioLogin == null)
         {

@@ -11,8 +11,8 @@ using SistemaPizza.Data;
 namespace SistemaPizza.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261010185028_v.0.1")]
-    partial class v01
+    [Migration("20261013011115_v0.5")]
+    partial class v05
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -46,9 +46,12 @@ namespace SistemaPizza.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("criadoEm")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Clientes");
+                    b.ToTable("Clientes", (string)null);
                 });
 
             modelBuilder.Entity("SistemaPizza.Models.Conta", b =>
