@@ -23,6 +23,7 @@ public sealed class AppDbContext : DbContext
                 entidade.Property(account => account.Senha).HasMaxLength(250).IsRequired();
                 entidade.HasOne(account => account.cliente).WithMany().HasForeignKey(account => account.IdCliente);
                 entidade.Property(account => account.SenhaHash).HasMaxLength(250).IsRequired();
+                entidade.Property(account => account.status).IsRequired().HasConversion<string>();
                 entidade.Property(account => account.criadoEm).IsRequired();
                 
             }
@@ -36,11 +37,12 @@ public sealed class AppDbContext : DbContext
             {
                 entidade.ToTable("Clientes");
                 entidade.HasKey(cliente => cliente.Id);
-                entidade.Property(cliente => cliente.Nome).IsRequired();
-                entidade.Property(cliente => cliente.Email).IsRequired();
+                entidade.Property(cliente => cliente.Nome).IsRequired().HasMaxLength(250);
+                entidade.Property(cliente => cliente.Email).IsRequired().HasMaxLength(250);
                 entidade.Property(cliente => cliente.SenhaHash);
-                entidade.Property(cliente => cliente.Telefone).IsRequired();
-                entidade.Property(cliente => cliente.Endereco).IsRequired();
+                entidade.Property(cliente => cliente.Telefone).IsRequired().HasMaxLength(30);
+                entidade.Property(cliente => cliente.Endereco).IsRequired().HasMaxLength(250);
+                entidade.Property(cliente => cliente.status).IsRequired().HasConversion<string>();
                 entidade.Property(cliente => cliente.criadoEm);
             }
         );
