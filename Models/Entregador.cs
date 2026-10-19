@@ -6,4 +6,7 @@ public sealed class Entregador
     public string Telefone {get; set;} = string.Empty;
     public TipoDeVeiculo veiculo {get; set;} = TipoDeVeiculo.Moto;
     public Disponivel disponivel {get; set;} = Disponivel.Disponivel;
+    public StatusPedido status {get; set;} = StatusPedido.Nenhuma_Entrega;
+    public string Aviso {get; set;} = string.Empty;
+    public DateTime? DataAtualizada {get; set;}
 }

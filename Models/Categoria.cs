@@ -1,8 +1,12 @@
 namespace SistemaPizza.Models;
-public sealed class Categoria
+public enum Categoria
 {
-    public int IdCategoria {get; set;}
-    public string Nome {get; set;} = string.Empty;
-    public StatusAtivo status {get; set;} = StatusAtivo.Ativado;
-
+    Comida = 1,
+    Bebida = 2,
+    Sobremesa = 3,
+    Pizza_Salgada = 4,
+    Pizza_Doce = 5,
+    Pizza_Fit = 6,
+    Entrada_e_Acompanhamento = 7,
+    Combo_Promocional = 8
 }

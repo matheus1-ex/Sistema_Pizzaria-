@@ -10,6 +10,8 @@ public sealed class AppDbContext : DbContext
 
     public DbSet<Cliente> Clientes {get; set;}
 
+    public DbSet<Entregador> Entregadores {get; set;}
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -18,9 +20,9 @@ public sealed class AppDbContext : DbContext
             {
                 entidade.ToTable("Contas");
                 entidade.HasKey(account => account.Id);
-                entidade.Property(account => account.Nome).IsRequired().HasMaxLength(250);
-                entidade.Property(account => account.Email).HasMaxLength(250).IsRequired();
-                entidade.Property(account => account.Senha).HasMaxLength(250).IsRequired();
+                entidade.HasIndex(account => account.Nome).IsUnique();
+                entidade.HasIndex(account => account.Email).IsUnique();
+                entidade.HasIndex(account => account.Senha).IsUnique();
                 entidade.HasOne(account => account.cliente).WithMany().HasForeignKey(account => account.IdCliente);
                 entidade.Property(account => account.SenhaHash).HasMaxLength(250).IsRequired();
                 entidade.Property(account => account.status).IsRequired().HasConversion<string>();
@@ -37,13 +39,30 @@ public sealed class AppDbContext : DbContext
             {
                 entidade.ToTable("Clientes");
                 entidade.HasKey(cliente => cliente.Id);
-                entidade.Property(cliente => cliente.Nome).IsRequired().HasMaxLength(250);
-                entidade.Property(cliente => cliente.Email).IsRequired().HasMaxLength(250);
+                entidade.HasIndex(cliente => cliente.Nome).IsUnique();
+                entidade.HasIndex(cliente => cliente.Email).IsUnique();
                 entidade.Property(cliente => cliente.SenhaHash);
-                entidade.Property(cliente => cliente.Telefone).IsRequired().HasMaxLength(30);
+                entidade.HasIndex(cliente => cliente.Telefone).IsUnique();
                 entidade.Property(cliente => cliente.Endereco).IsRequired().HasMaxLength(250);
                 entidade.Property(cliente => cliente.status).IsRequired().HasConversion<string>();
                 entidade.Property(cliente => cliente.criadoEm);
+            }
+        );
+
+        /// ================
+        /// Entregador
+        /// ================
+        modelBuilder.Entity<Entregador>(
+            entidade =>
+            {
+                entidade.ToTable("Entregadores");
+                entidade.HasKey(delivery => delivery.Id);
+                entidade.HasIndex(delivery => delivery.Nome).IsUnique();
+                entidade.HasIndex(delivery => delivery.Telefone).IsUnique();
+                entidade.Property(delivery => delivery.veiculo).IsRequired().HasConversion<string>();
+                entidade.Property(delivery => delivery.disponivel).IsRequired().HasConversion<string>();
+                entidade.Property(delivery => delivery.status).IsRequired().HasConversion<string>();
+                entidade.Property(delivery => delivery.DataAtualizada);
             }
         );
 
