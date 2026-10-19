@@ -18,5 +18,15 @@ public sealed class ProdutoRequestDto
     [Required(ErrorMessage = "preço obrigatório.")]
     public decimal preco {get; set;}
 
+}
 
+public sealed class ProdutoResponseDto
+{
+
+	public int Id {get; set;}
+	public string nome {get; set;} = string.Empty;
+	public Categoria? categoria {get; set;}
+	public string descricao {get; set;} = string.Empty;
+	public decimal preco {get; set;}
+	public StatusAtivo status {get; set;} = StatusAtivo.Ativado;
 }

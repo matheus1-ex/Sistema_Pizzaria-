@@ -12,6 +12,8 @@ public sealed class AppDbContext : DbContext
 
     public DbSet<Entregador> Entregadores {get; set;}
 
+	public DbSet<Produto> Produtos {get; set;}
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -65,6 +67,17 @@ public sealed class AppDbContext : DbContext
                 entidade.Property(delivery => delivery.DataAtualizada);
             }
         );
+
+	modelBuilder.Entity<Produto>(
+		entidade =>
+		{
+			entidade.ToTable("Produtos");
+			entidade.HasKey(product => product.Id).IsUnique();
+			entidade.HasIndex(product => product.Nome).IsUnique();
+			entidade.Property(product => product.Descricao).IsRequired().HasMaxLength(250);
+			entidade.Property(product => product.Preco).IsRequired();
+			entidade.Property(product => product.status).HasConversion<string>().IsRequired();
+		}
 
     }
 }
