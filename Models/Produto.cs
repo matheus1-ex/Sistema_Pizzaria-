@@ -11,5 +11,16 @@ public sealed class Produto
     public string Descricao {get; set;} = string.Empty;
     public decimal Preco {get; set;}
 
+    //Fabricado
+    public DateTime dataFabricado {get; set;}
+
+    //Validade
+    public DateTime dataValidade {get; set;}
+
+    //consumível
+    public EmConsumo consumo {get; set;} = EmConsumo.Consumível;
+
     public StatusAtivo status {get; set;} = StatusAtivo.Ativado;
+
+    public string mensagem {get; set;} = string.Empty;
 }

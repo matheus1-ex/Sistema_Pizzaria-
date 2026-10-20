@@ -72,12 +72,14 @@ public sealed class AppDbContext : DbContext
 		entidade =>
 		{
 			entidade.ToTable("Produtos");
-			entidade.HasKey(product => product.Id).IsUnique();
+			entidade.HasKey(product => product.IdProduto);
 			entidade.HasIndex(product => product.Nome).IsUnique();
 			entidade.Property(product => product.Descricao).IsRequired().HasMaxLength(250);
 			entidade.Property(product => product.Preco).IsRequired();
+            entidade.Property(product => product.consumo).HasConversion<string>().IsRequired();
 			entidade.Property(product => product.status).HasConversion<string>().IsRequired();
 		}
+    );
 
     }
 }

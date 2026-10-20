@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "targets": {
     "net10.0": {
       "BCrypt.Net-Next/5.0.0-prerelease.g1003abb019": {
@@ -2505,29 +2505,29 @@
     ]
   },
   "packageFolders": {
-    "/root/.nuget/packages/": {}
+    "C:\\Users\\julio\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/mnt/sdcard/SistemaPizza/Sistema_Pizzaria-/SistemaPizza.csproj",
+      "projectUniqueName": "C:\\Users\\julio\\OneDrive\\Documentos\\SistemaPizzaria\\SistemaPizza\\SistemaPizza.csproj",
       "projectName": "SistemaPizza",
-      "projectPath": "/mnt/sdcard/SistemaPizza/Sistema_Pizzaria-/SistemaPizza.csproj",
-      "packagesPath": "/root/.nuget/packages/",
-      "outputPath": "/mnt/sdcard/SistemaPizza/Sistema_Pizzaria-/obj/",
+      "projectPath": "C:\\Users\\julio\\OneDrive\\Documentos\\SistemaPizzaria\\SistemaPizza\\SistemaPizza.csproj",
+      "packagesPath": "C:\\Users\\julio\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\julio\\OneDrive\\Documentos\\SistemaPizzaria\\SistemaPizza\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/root/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\julio\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "/usr/lib/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net10.0": {
+          "framework": "net10.0",
           "targetAlias": "net10.0",
           "projectReferences": {}
         }
@@ -2542,10 +2542,11 @@
         "auditLevel": "low",
         "auditMode": "all"
       },
-      "SdkAnalysisLevel": "10.0.100"
+      "SdkAnalysisLevel": "10.0.300"
     },
     "frameworks": {
       "net10.0": {
+        "framework": "net10.0",
         "targetAlias": "net10.0",
         "dependencies": {
           "BCrypt.Net-Next": {
@@ -2594,7 +2595,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/10.0.110/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.303/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
