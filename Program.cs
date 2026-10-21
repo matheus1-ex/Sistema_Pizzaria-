@@ -34,6 +34,7 @@ public partial class Program
         //Injeção de dependência
         builder.Services.AddScoped<IClienteService, ClienteService>();
         builder.Services.AddScoped<IEntregadorService, EntregadorService>();
+        builder.Services.AddScoped<IProdutoService, ProdutoService>();
 
         var app = builder.Build();
          Console.WriteLine($"O SQL Server está sendo gravado em {System.IO.Path.GetFullPath("sistemapizza.db")}");

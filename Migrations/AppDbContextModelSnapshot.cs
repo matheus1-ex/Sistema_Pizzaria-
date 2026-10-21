@@ -128,6 +128,10 @@ namespace SistemaPizza.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Aviso")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime?>("DataAtualizada")
                         .HasColumnType("TEXT");
 
@@ -160,6 +164,53 @@ namespace SistemaPizza.Migrations
                         .IsUnique();
 
                     b.ToTable("Entregadores", (string)null);
+                });
+
+            modelBuilder.Entity("SistemaPizza.Models.Produto", b =>
+                {
+                    b.Property<int>("IdProduto")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Categoria")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Preco")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("consumo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("dataFabricado")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("dataValidade")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("mensagem")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("IdProduto");
+
+                    b.HasIndex("Nome")
+                        .IsUnique();
+
+                    b.ToTable("Produtos", (string)null);
                 });
 
             modelBuilder.Entity("SistemaPizza.Models.Conta", b =>

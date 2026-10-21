@@ -68,11 +68,16 @@ public sealed class AppDbContext : DbContext
             }
         );
 
+        /// =============
+        /// Produto
+        /// =============
+
 	modelBuilder.Entity<Produto>(
 		entidade =>
 		{
 			entidade.ToTable("Produtos");
 			entidade.HasKey(product => product.IdProduto);
+            entidade.Property(product => product.Categoria).HasConversion<string>();
 			entidade.HasIndex(product => product.Nome).IsUnique();
 			entidade.Property(product => product.Descricao).IsRequired().HasMaxLength(250);
 			entidade.Property(product => product.Preco).IsRequired();
