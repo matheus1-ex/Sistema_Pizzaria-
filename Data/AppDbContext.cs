@@ -14,6 +14,8 @@ public sealed class AppDbContext : DbContext
 
 	public DbSet<Produto> Produtos {get; set;}
 
+    public DbSet<Pedido> Pedidos {get; set;}
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -86,5 +88,29 @@ public sealed class AppDbContext : DbContext
 		}
     );
 
+    /// ==============
+    /// Pedidos
+    /// ==============
+    modelBuilder.Entity<Pedido>(
+        entidade =>
+        {
+            entidade.ToTable("Pedidos");
+            entidade.HasKey(order => order.Id);
+
+            entidade.HasOne(pedido => pedido.cliente)
+            .WithMany(client => client.Pedidos)
+            .HasForeignKey(clientId => clientId.IdCliente);
+
+            entidade.HasOne(delivery => delivery.entregador)
+            .WithMany(pedido => pedido.Pedidos)
+            .HasForeignKey(deliveryId => deliveryId.IdEntregador);
+
+            entidade.Property(order => order.TaxaEntrega).IsRequired();
+            entidade.Property(order => order.ValorTotal);
+
+            entidade.Property(order => order.criadoEm);
+
+        }
+    );
     }
 }

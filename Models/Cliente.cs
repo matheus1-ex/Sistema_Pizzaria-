@@ -13,4 +13,6 @@ public sealed class Cliente
     public StatusAtivo status {get; set;} = StatusAtivo.Ativado;
     public DateTime criadoEm {get; set;}
 
+    public ICollection<Pedido> Pedidos {get; set;} = new List<Pedido>();
+
 }

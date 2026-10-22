@@ -9,4 +9,6 @@ public sealed class Entregador
     public StatusPedido status {get; set;} = StatusPedido.Nenhuma_Entrega;
     public string Aviso {get; set;} = string.Empty;
     public DateTime? DataAtualizada {get; set;}
+
+    public ICollection<Pedido> Pedidos {get; set;} = new List<Pedido>();
 }

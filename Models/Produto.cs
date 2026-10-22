@@ -6,6 +6,8 @@ public sealed class Produto
     //Ou seja, cada produto tem a sua respectiva categoria
     public Categoria? Categoria {get; set;}
 
+    public Cliente? cliente {get; set;}
+
     //Dados essenciais
     public string Nome {get; set;} = string.Empty;
     public string Descricao {get; set;} = string.Empty;
@@ -19,6 +21,8 @@ public sealed class Produto
 
     //consumível
     public EmConsumo consumo {get; set;} = EmConsumo.Consumível;
+
+    public ICollection<Pedido> Pedidos {get; set; } = new List<Pedido>();
 
     public StatusAtivo status {get; set;} = StatusAtivo.Ativado;
 
