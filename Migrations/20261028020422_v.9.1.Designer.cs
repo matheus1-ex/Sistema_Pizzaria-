@@ -11,14 +11,59 @@ using SistemaPizza.Data;
 namespace SistemaPizza.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261021010449_v0.9.2")]
-    partial class v092
+    [Migration("20261028020422_v.9.1")]
+    partial class v91
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.12");
+
+            modelBuilder.Entity("ItemVendido", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("EntregadorId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("IdEntregador")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("IdPedido")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("IdProduto")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Observação")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("PrecoSubTotal")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Qtd")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("precoUnitario")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("situacaoEntrega")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EntregadorId");
+
+                    b.HasIndex("IdPedido");
+
+                    b.HasIndex("IdProduto");
+
+                    b.ToTable("Vendidos", (string)null);
+                });
 
             modelBuilder.Entity("SistemaPizza.Models.Cliente", b =>
                 {
@@ -142,6 +187,9 @@ namespace SistemaPizza.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("PedidosId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Telefone")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -163,10 +211,47 @@ namespace SistemaPizza.Migrations
                     b.HasIndex("Nome")
                         .IsUnique();
 
+                    b.HasIndex("PedidosId");
+
                     b.HasIndex("Telefone")
                         .IsUnique();
 
                     b.ToTable("Entregadores", (string)null);
+                });
+
+            modelBuilder.Entity("SistemaPizza.Models.Pedido", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("IdCliente")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("IdEntregador")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("TaxaEntrega")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("criadoEm")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("pagamento")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("produtoIdProduto")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdCliente");
+
+                    b.HasIndex("IdEntregador");
+
+                    b.HasIndex("produtoIdProduto");
+
+                    b.ToTable("Pedidos", (string)null);
                 });
 
             modelBuilder.Entity("SistemaPizza.Models.Produto", b =>
@@ -189,6 +274,9 @@ namespace SistemaPizza.Migrations
 
                     b.Property<decimal>("Preco")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("clienteId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("consumo")
                         .IsRequired()
@@ -213,7 +301,34 @@ namespace SistemaPizza.Migrations
                     b.HasIndex("Nome")
                         .IsUnique();
 
+                    b.HasIndex("clienteId");
+
                     b.ToTable("Produtos", (string)null);
+                });
+
+            modelBuilder.Entity("ItemVendido", b =>
+                {
+                    b.HasOne("SistemaPizza.Models.Entregador", "Entregador")
+                        .WithMany()
+                        .HasForeignKey("EntregadorId");
+
+                    b.HasOne("SistemaPizza.Models.Pedido", "Pedido")
+                        .WithMany("Itens")
+                        .HasForeignKey("IdPedido")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SistemaPizza.Models.Produto", "produto")
+                        .WithMany("itemVendidos")
+                        .HasForeignKey("IdProduto")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Entregador");
+
+                    b.Navigation("Pedido");
+
+                    b.Navigation("produto");
                 });
 
             modelBuilder.Entity("SistemaPizza.Models.Conta", b =>
@@ -225,6 +340,62 @@ namespace SistemaPizza.Migrations
                         .IsRequired();
 
                     b.Navigation("cliente");
+                });
+
+            modelBuilder.Entity("SistemaPizza.Models.Entregador", b =>
+                {
+                    b.HasOne("SistemaPizza.Models.Pedido", "Pedidos")
+                        .WithMany()
+                        .HasForeignKey("PedidosId");
+
+                    b.Navigation("Pedidos");
+                });
+
+            modelBuilder.Entity("SistemaPizza.Models.Pedido", b =>
+                {
+                    b.HasOne("SistemaPizza.Models.Cliente", "cliente")
+                        .WithMany("Pedidos")
+                        .HasForeignKey("IdCliente")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SistemaPizza.Models.Entregador", "entregador")
+                        .WithMany()
+                        .HasForeignKey("IdEntregador");
+
+                    b.HasOne("SistemaPizza.Models.Produto", "produto")
+                        .WithMany()
+                        .HasForeignKey("produtoIdProduto");
+
+                    b.Navigation("cliente");
+
+                    b.Navigation("entregador");
+
+                    b.Navigation("produto");
+                });
+
+            modelBuilder.Entity("SistemaPizza.Models.Produto", b =>
+                {
+                    b.HasOne("SistemaPizza.Models.Cliente", "cliente")
+                        .WithMany()
+                        .HasForeignKey("clienteId");
+
+                    b.Navigation("cliente");
+                });
+
+            modelBuilder.Entity("SistemaPizza.Models.Cliente", b =>
+                {
+                    b.Navigation("Pedidos");
+                });
+
+            modelBuilder.Entity("SistemaPizza.Models.Pedido", b =>
+                {
+                    b.Navigation("Itens");
+                });
+
+            modelBuilder.Entity("SistemaPizza.Models.Produto", b =>
+                {
+                    b.Navigation("itemVendidos");
                 });
 #pragma warning restore 612, 618
         }

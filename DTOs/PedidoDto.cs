@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.Versioning;
 using SistemaPizza.Models;
 
-namespace SistemaPizza.Models;
+namespace SistemaPizza.DTOs;
 public sealed class PedidoRequestDto
 {
     /// <summary>
@@ -11,9 +11,13 @@ public sealed class PedidoRequestDto
     /// </summary>
     [Required(ErrorMessage = "campo obrigatório.")]
     public int IdCliente {get; set;}
-    public int IdEntregador {get; set;}
+    public FormaPagamento pagamento {get; set;}
 
-    public FormaPagamento pagamento {get; set;} = FormaPagamento.Pix;
+
+    //Os Campos da requisição de item vendido
+    public List<ItemVendidoRequestDto> itens {get; set;} = new();
+
+    public string? Observação {get; set;}
 }
 
 public sealed class PedidoResponseDto
@@ -21,16 +25,13 @@ public sealed class PedidoResponseDto
     public int IdPedido {get; set;}
 
     public int IdCliente {get; set;}
-    public int IdEntregador {get; set;}
-
-    public Produto? produto {get; set;}
-
+    public int? IdEntregador {get; set;}
+    public decimal TaxaEntrega {get; set;} = 5.00m;
     public FormaPagamento Pagamento {get; set;}
 
-    public decimal TaxaEntrega {get; set;} = 5.00m;
+    public List<ItemVendidoResponseDto> items {get; set;} = new();
 
-    public decimal ValorTotal => (produto?.Preco ?? 0) + TaxaEntrega;
+    public decimal ValorTotal => items.Sum(item => item.SubTotal) + TaxaEntrega;
 
-    public DateTime criadoEm {get; set;} 
-    
+    public DateTime criadoEm {get; set;}
 }

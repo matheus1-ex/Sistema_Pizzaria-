@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 namespace SistemaPizza.Models;
 public sealed class Pedido
 {
@@ -10,14 +11,14 @@ public sealed class Pedido
     public Cliente? cliente {get; set;}
 
     //Relacionamento com o Entregador (1 ---- 0...*)
-    public int IdEntregador {get; set;}
+    public int? IdEntregador {get; set;}
     public Entregador? entregador {get; set;}
 
     public decimal TaxaEntrega {get; set;} = 5.0m;
 
-    public decimal ValorTotal => (produto?.Preco ?? 0) + TaxaEntrega;
+    public ICollection<ItemVendido> Itens {get; set;} = new List<ItemVendido>(); 
 
     public FormaPagamento pagamento {get; set;}
 
-    public DateTime criadoEm {get;set;}
+    public string? criadoEm {get;set;}
 }

@@ -22,7 +22,7 @@ public sealed class Produto
     //consumível
     public EmConsumo consumo {get; set;} = EmConsumo.Consumível;
 
-    public ICollection<Pedido> Pedidos {get; set; } = new List<Pedido>();
+    public ICollection<ItemVendido> itemVendidos {get; set;}= new List<ItemVendido>();
 
     public StatusAtivo status {get; set;} = StatusAtivo.Ativado;
 

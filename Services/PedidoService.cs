@@ -1,6 +1,7 @@
 using SistemaPizza.DTOs;
 using Microsoft.EntityFrameworkCore;
 using SistemaPizza.Data;
+using System.Globalization;
 using SistemaPizza.Models;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
@@ -10,6 +11,7 @@ namespace SistemaPizza.Services;
 
 public class PedidoService : IPedidoService
 {
+
     private readonly AppDbContext _context;
     private readonly IConfiguration _configuration;
     public PedidoService(AppDbContext context, IConfiguration configuration)
@@ -17,18 +19,27 @@ public class PedidoService : IPedidoService
         _context = context;
         _configuration = configuration;
     }
-    public Task<Pedido?> AnalisarPedidoAsync(int id, CancellationToken cancellation)
+    public async Task<Pedido?> AnalisarPedidoAsync(int id, CancellationToken cancellation)
     {
-        throw new NotImplementedException();
+        return await _context.Pedidos.AsNoTracking().FirstOrDefaultAsync(
+            order => order.Id == id,
+            cancellation
+        );
+
     }
 
     public async Task<PedidoResponseDto> RegistrarPedidoAsync(PedidoRequestDto dto, CancellationToken cancellation)
     {
+        var hBr = new CultureInfo("pt-BR");
+        DateTime agr = DateTime.Now;
         var pedido = new Pedido
         {
             IdCliente = dto.IdCliente,
-            IdEntregador = dto.IdEntregador,
-            pagamento = dto.pagamento        
+            IdEntregador = null,
+            pagamento = dto.pagamento,
+            TaxaEntrega = 5.00m,
+            criadoEm = agr.ToString("g", hBr)
+
         };
 
         _context.Pedidos.Add(pedido);
@@ -36,8 +47,14 @@ public class PedidoService : IPedidoService
         return new PedidoResponseDto
         {
             IdCliente = dto.IdCliente,
-            IdEntregador = dto.IdEntregador,
+            items = dto.itens.Select(item => new ItemVendidoResponseDto
+            {
+                IdProduto = item.IdProduto,
+                Qtd = item.Quantidade,
+
+            }).ToList(),
             Pagamento = dto.pagamento,
+
         };
     }
 }

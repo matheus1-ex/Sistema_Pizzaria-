@@ -10,5 +10,5 @@ public sealed class Entregador
     public string Aviso {get; set;} = string.Empty;
     public DateTime? DataAtualizada {get; set;}
 
-    public ICollection<Pedido> Pedidos {get; set;} = new List<Pedido>();
+    public Pedido? Pedidos {get; set;} 
 }

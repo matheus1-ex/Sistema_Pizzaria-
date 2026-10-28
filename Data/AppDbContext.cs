@@ -16,6 +16,8 @@ public sealed class AppDbContext : DbContext
 
     public DbSet<Pedido> Pedidos {get; set;}
 
+    public DbSet<ItemVendido> Vendidos {get; set;}
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -102,13 +104,39 @@ public sealed class AppDbContext : DbContext
             .HasForeignKey(clientId => clientId.IdCliente);
 
             entidade.HasOne(delivery => delivery.entregador)
-            .WithMany(pedido => pedido.Pedidos)
+            .WithMany()
             .HasForeignKey(deliveryId => deliveryId.IdEntregador);
 
             entidade.Property(order => order.TaxaEntrega).IsRequired();
-            entidade.Property(order => order.ValorTotal);
 
             entidade.Property(order => order.criadoEm);
+
+        }
+    );
+
+    /// =========
+    /// Item vendido (aqui vai mostrar o total de tudo)
+    /// =========
+    modelBuilder.Entity<ItemVendido>(
+        ent =>
+        {
+            ent.ToTable("Vendidos");
+
+            ent.HasKey(sell => sell.Id);
+            ent.HasOne(sell => sell.produto)
+            .WithMany(pedidos => pedidos.itemVendidos)
+            .HasForeignKey(order => order.IdProduto)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            ent.HasOne(sell => sell.Pedido)
+            .WithMany(itens => itens.Itens)
+            .HasForeignKey(i => i.IdPedido);
+
+            ent.Property(quanty => quanty.Qtd).IsRequired();
+
+            ent.Property(unity => unity.precoUnitario).IsRequired();
+
+            ent.Property(total => total.PrecoSubTotal).IsRequired();
 
         }
     );
