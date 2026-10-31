@@ -4,6 +4,7 @@ public sealed class Pedido
 {
     public int Id {get; set;}
 
+    public int IdProduto {get; set;}
     public Produto? produto {get; set;}
 
     //Relacionamento com o cliente
@@ -19,6 +20,8 @@ public sealed class Pedido
     public ICollection<ItemVendido> Itens {get; set;} = new List<ItemVendido>(); 
 
     public FormaPagamento pagamento {get; set;}
+
+    public decimal SubTotal {get; set;}
 
     public string? criadoEm {get;set;}
 }

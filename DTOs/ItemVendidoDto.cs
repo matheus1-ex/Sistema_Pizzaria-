@@ -5,6 +5,8 @@ namespace SistemaPizza.DTOs;
 
 public sealed class ItemVendidoRequestDto
 {
+    [Required]
+    public int IdPedido {get; set;}
     public int IdProduto {get; set;}
     public int IdEntregador {get; set;}
     public string NomePrduto {get; set;} = string.Empty;
@@ -16,11 +18,12 @@ public sealed class ItemVendidoRequestDto
 public sealed class ItemVendidoResponseDto
 {
     public int Id {get; set;}
+    public int IdPedido {get; set;}
     public int IdEntregador {get; set;}
    public int IdProduto {get; set;}
    public string NomeProduto {get; set;} = string.Empty;
    public int Qtd {get; set;}
    public decimal PrecoUnd {get; set;}
-   public decimal SubTotal => Qtd * PrecoUnd;
+   public decimal SubTotal { get; set; }
 
 }

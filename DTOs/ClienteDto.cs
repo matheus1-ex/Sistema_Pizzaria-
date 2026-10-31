@@ -3,6 +3,10 @@ using SistemaPizza.Models;
 namespace SistemaPizza.DTOs;
 public sealed class ClienteDto
 {
+    /// <summary>
+    /// cadastro do cliente
+    /// 
+    /// </summary>
     [Required(ErrorMessage = "Nome obrigatório")]
     public string Nome {get; set;} = string.Empty;
 
@@ -21,18 +25,32 @@ public sealed class ClienteDto
     public string Endereco {get; set;} = string.Empty;
 }
 
+public sealed class LoginRequestDto
+{
+    [Required(ErrorMessage ="campo obrigatório")]
+    public string Email {get; set;} = string.Empty;
+    public string Senha {get; set;} = string.Empty;
+}
+
+
+public sealed class LoginResponseDto
+{
+    public string Email {get; set;} = string.Empty;
+    public string Senha {get; set;} = string.Empty;
+    public StatusAtivo status {get; set;} = StatusAtivo.Ativado;
+}
+
 public sealed class ClienteResponseDto
 {
     public int Id {get; set;}
     public string Nome {get; set;} = string.Empty;
     public string Email {get; set;} = string.Empty;
-    public string Telefone {get; set;} = string.Empty;
+    public string? Senha {get; set;}
+    public string? Telefone {get; set;}
     public string SenhaHash {get; set;} = string.Empty;
     public string Endereco {get; set;} = string.Empty;
     public StatusAtivo status {get; set;} = StatusAtivo.Ativado;
-    public DateTime criadoEm {get; set;} = DateTime.UtcNow;
+    public string criadoEm {get; set;} = string.Empty;
 
-    //Relacionamento com o id do cliente
-    public int IdCliente {get; set;}
-    public Cliente? cliente {get; set;}
+    public int IdConta {get; set;}
 }

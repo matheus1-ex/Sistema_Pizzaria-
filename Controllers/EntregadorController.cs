@@ -71,7 +71,7 @@ public class EntregadorController : ControllerBase
     )
     {
         var resultado = await _entregadorService.AtualizarDisponivelAsync(id, dto, cancellation);
-        if (!resultado)
+        if (resultado == null)
         {
             return NotFound(new {mensagem = "entregador não atualizado"});
         }

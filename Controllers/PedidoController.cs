@@ -6,7 +6,8 @@ using SistemaPizza.Services;
 using Microsoft.AspNetCore.Identity.Data;
 
 namespace SistemaPizza.Controllers;
-
+[ApiController]
+[Route("api/[controller]")]
 public class PedidoController : ControllerBase
 {
     private readonly IPedidoService _pedidoService;

@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Versioning;
 using SistemaPizza.Models;
+using System.Globalization;
 
 namespace SistemaPizza.DTOs;
 public sealed class ProdutoRequestDto
@@ -19,10 +20,10 @@ public sealed class ProdutoRequestDto
     public decimal preco {get; set;}
 
     [Required(ErrorMessage = "data do produto fabricado obrigatório.")]
-    public DateTime dataFabricado {get; set;}
+    public string dataFabricado {get; set;} = string.Empty;
 
     [Required(ErrorMessage = "data de validade obrigatória.")]
-    public DateTime dataValidade {get; set;}
+    public string dataValidade {get; set;} = string.Empty;
 
     public StatusAtivo status {get; set;} = StatusAtivo.Ativado;
 

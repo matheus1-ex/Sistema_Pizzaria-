@@ -31,12 +31,14 @@ public class PedidoService : IPedidoService
     public async Task<PedidoResponseDto> RegistrarPedidoAsync(PedidoRequestDto dto, CancellationToken cancellation)
     {
         var hBr = new CultureInfo("pt-BR");
-        DateTime agr = DateTime.Now;
+        DateTime agr = DateTime.UtcNow.AddHours(-3);
         var pedido = new Pedido
         {
             IdCliente = dto.IdCliente,
-            IdEntregador = null,
+            IdEntregador = dto.IdEntregador,
+            IdProduto = dto.IdProduto,
             pagamento = dto.pagamento,
+            SubTotal = dto.itens.Sum(i => i.precoUnd * i.Quantidade),
             TaxaEntrega = 5.00m,
             criadoEm = agr.ToString("g", hBr)
 
@@ -49,11 +51,16 @@ public class PedidoService : IPedidoService
             IdCliente = dto.IdCliente,
             items = dto.itens.Select(item => new ItemVendidoResponseDto
             {
-                IdProduto = item.IdProduto,
+                IdPedido = pedido.Id,
+                IdEntregador = item.IdEntregador,
+                IdProduto = pedido.IdProduto,
+                NomeProduto = item.NomePrduto,
                 Qtd = item.Quantidade,
-
+                PrecoUnd = item.precoUnd,
+            
             }).ToList(),
             Pagamento = dto.pagamento,
+            criadoEm = agr.ToString("g", hBr)
 
         };
     }

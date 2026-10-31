@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <AssemblyName>SistemaPizza</AssemblyName>
     <ImplicitUsings>enable</ImplicitUsings>
     <OpenApiGenerateXmlComments>false</OpenApiGenerateXmlComments>
   </PropertyGroup>

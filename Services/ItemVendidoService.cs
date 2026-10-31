@@ -32,20 +32,25 @@ public sealed class ItemVendidoService : IItemVendidoService
     {
         var itemVendido = new ItemVendido
         {
-
-            IdEntregador = dto.IdEntregador,
+            IdPedido = dto.IdPedido,
             IdProduto = dto.IdProduto,
+            IdEntregador = dto.IdEntregador,
+            precoUnitario = dto.precoUnd,
+            Qtd = dto.Quantidade,
             Observação = dto.Observação,
         };
         _context.Vendidos.Add(itemVendido);
         await _context.SaveChangesAsync(cancellation);
         return new ItemVendidoResponseDto
         {
-            IdEntregador = dto.IdEntregador,
-            IdProduto = dto.IdProduto,
+            Id = itemVendido.Id,
+            IdPedido = itemVendido.IdPedido,
+            IdEntregador = itemVendido.IdEntregador,
+            IdProduto = itemVendido.IdProduto,
             NomeProduto = dto.NomePrduto,
             PrecoUnd = dto.precoUnd,
             Qtd = dto.Quantidade,
+            SubTotal = dto.precoUnd * dto.Quantidade
         };
     }
 

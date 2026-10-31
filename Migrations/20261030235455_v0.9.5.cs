@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SistemaPizza.Migrations
 {
     /// <inheritdoc />
-    public partial class v91 : Migration
+    public partial class v095 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,42 +19,16 @@ namespace SistemaPizza.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Nome = table.Column<string>(type: "TEXT", nullable: false),
                     Email = table.Column<string>(type: "TEXT", nullable: false),
+                    Senha = table.Column<string>(type: "TEXT", nullable: false),
                     SenhaHash = table.Column<string>(type: "TEXT", nullable: false),
                     Telefone = table.Column<string>(type: "TEXT", nullable: false),
                     Endereco = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
                     status = table.Column<string>(type: "TEXT", nullable: false),
-                    criadoEm = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    criadoEm = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clientes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Contas",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Nome = table.Column<string>(type: "TEXT", nullable: false),
-                    Telefone = table.Column<string>(type: "TEXT", nullable: false),
-                    Endereco = table.Column<string>(type: "TEXT", nullable: false),
-                    IdCliente = table.Column<int>(type: "INTEGER", nullable: false),
-                    Email = table.Column<string>(type: "TEXT", nullable: false),
-                    Senha = table.Column<string>(type: "TEXT", nullable: false),
-                    SenhaHash = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
-                    status = table.Column<string>(type: "TEXT", nullable: false),
-                    criadoEm = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Contas", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Contas_Clientes_IdCliente",
-                        column: x => x.IdCliente,
-                        principalTable: "Clientes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,7 +38,6 @@ namespace SistemaPizza.Migrations
                     IdProduto = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Categoria = table.Column<string>(type: "TEXT", nullable: true),
-                    clienteId = table.Column<int>(type: "INTEGER", nullable: true),
                     Nome = table.Column<string>(type: "TEXT", nullable: false),
                     Descricao = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
                     Preco = table.Column<decimal>(type: "TEXT", nullable: false),
@@ -77,9 +50,30 @@ namespace SistemaPizza.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Produtos", x => x.IdProduto);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Contas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Nome = table.Column<string>(type: "TEXT", nullable: false),
+                    Telefone = table.Column<string>(type: "TEXT", nullable: false),
+                    Endereco = table.Column<string>(type: "TEXT", nullable: false),
+                    IdCliente = table.Column<int>(type: "INTEGER", nullable: true),
+                    Email = table.Column<string>(type: "TEXT", nullable: false),
+                    Senha = table.Column<string>(type: "TEXT", nullable: false),
+                    SenhaHash = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
+                    status = table.Column<string>(type: "TEXT", nullable: false),
+                    criadoEm = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Contas", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Produtos_Clientes_clienteId",
-                        column: x => x.clienteId,
+                        name: "FK_Contas_Clientes_IdCliente",
+                        column: x => x.IdCliente,
                         principalTable: "Clientes",
                         principalColumn: "Id");
                 });
@@ -90,13 +84,14 @@ namespace SistemaPizza.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    IdPedido = table.Column<int>(type: "INTEGER", nullable: false),
                     Nome = table.Column<string>(type: "TEXT", nullable: false),
                     Telefone = table.Column<string>(type: "TEXT", nullable: false),
                     veiculo = table.Column<string>(type: "TEXT", nullable: false),
                     disponivel = table.Column<string>(type: "TEXT", nullable: false),
                     status = table.Column<string>(type: "TEXT", nullable: false),
                     Aviso = table.Column<string>(type: "TEXT", nullable: false),
-                    DataAtualizada = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    DataAtualizada = table.Column<string>(type: "TEXT", nullable: true),
                     PedidosId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
@@ -110,11 +105,12 @@ namespace SistemaPizza.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    IdProduto = table.Column<int>(type: "INTEGER", nullable: false),
                     produtoIdProduto = table.Column<int>(type: "INTEGER", nullable: true),
                     IdCliente = table.Column<int>(type: "INTEGER", nullable: false),
                     IdEntregador = table.Column<int>(type: "INTEGER", nullable: true),
                     TaxaEntrega = table.Column<decimal>(type: "TEXT", nullable: false),
-                    pagamento = table.Column<int>(type: "INTEGER", nullable: false),
+                    pagamento = table.Column<string>(type: "TEXT", nullable: false),
                     criadoEm = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -146,13 +142,12 @@ namespace SistemaPizza.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     IdPedido = table.Column<int>(type: "INTEGER", nullable: false),
                     IdProduto = table.Column<int>(type: "INTEGER", nullable: false),
-                    situacaoEntrega = table.Column<int>(type: "INTEGER", nullable: false),
                     IdEntregador = table.Column<int>(type: "INTEGER", nullable: false),
                     EntregadorId = table.Column<int>(type: "INTEGER", nullable: true),
                     precoUnitario = table.Column<decimal>(type: "TEXT", nullable: false),
                     Observação = table.Column<string>(type: "TEXT", nullable: false),
                     Qtd = table.Column<int>(type: "INTEGER", nullable: false),
-                    PrecoSubTotal = table.Column<decimal>(type: "TEXT", nullable: false)
+                    PrecoSubTotal = table.Column<decimal>(type: "TEXT", nullable: false, computedColumnSql: "[Qtd] * [precoUnitario]")
                 },
                 constraints: table =>
                 {
@@ -250,11 +245,6 @@ namespace SistemaPizza.Migrations
                 column: "produtoIdProduto");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Produtos_clienteId",
-                table: "Produtos",
-                column: "clienteId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Produtos_Nome",
                 table: "Produtos",
                 column: "Nome",
@@ -289,10 +279,6 @@ namespace SistemaPizza.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Pedidos_Clientes_IdCliente",
                 table: "Pedidos");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Produtos_Clientes_clienteId",
-                table: "Produtos");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Entregadores_Pedidos_PedidosId",

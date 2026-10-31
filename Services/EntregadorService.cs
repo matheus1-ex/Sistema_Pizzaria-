@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SistemaPizza.Data;
 using SistemaPizza.Models;
 using System.Linq.Expressions;
+using System.Globalization;
 using System.Security.Cryptography;
 namespace SistemaPizza.Services;
 public sealed class EntregadorService : IEntregadorService
@@ -16,32 +17,40 @@ public sealed class EntregadorService : IEntregadorService
         _configuration = configuration;
     }
 
-    public async Task<bool> AtualizarDisponivelAsync(int id, AtualizarEntregadorDto atualizar, CancellationToken cancellation)
+    public async Task<EntregadorResponseDto> AtualizarDisponivelAsync(int id, AtualizarEntregadorDto atualizar, CancellationToken cancellation)
     {
+        var culturaBr = new CultureInfo("pt-BR");
+        DateTime agr = DateTime.UtcNow.AddHours(-3);
         var status = await _context.Entregadores.FirstOrDefaultAsync(entregador => entregador.Id == id, cancellation);
         if (status == null)
         {
-            return false;
+            return new EntregadorResponseDto
+            {
+                disponivel = Disponivel.Indisponivel
+            };
         }
-
-
-        status.status = atualizar.pedido;
-        status.disponivel = atualizar.disponivel;
+        status.disponivel = Disponivel.Disponivel;
 
         /// Independentemente se o pedido for entrege ou não
         /// O Entregador estiver disponivel ou não  pra entrega a data sempre vai se atualziar
         if (atualizar.pedido == StatusPedido.Entregue || atualizar.pedido == StatusPedido.Cancelado)
         {
-            status.DataAtualizada = DateTime.UtcNow.AddHours(-3);
+            status.DataAtualizada = agr.ToString("g",culturaBr);
         }
 
         if (atualizar.disponivel == Disponivel.Disponivel || atualizar.disponivel == Disponivel.Indisponivel)
         {
-            status.DataAtualizada = DateTime.UtcNow.AddHours(-3);
+            status.DataAtualizada = agr.ToString("g", culturaBr);
         }
 
+        _context.Entregadores.Add(status);
         await _context.SaveChangesAsync(cancellation);
-        return true;
+        return new EntregadorResponseDto
+        {
+            Id = status.Id,
+            Nome = atualizar.Nome,
+            disponivel = atualizar.disponivel,
+        };
 
     }
 
@@ -53,11 +62,20 @@ public sealed class EntregadorService : IEntregadorService
             Telefone = dto.Telefone,
             veiculo = TipoDeVeiculo.Moto,
             disponivel = Disponivel.Disponivel,
+            Aviso = dto.aviso
         };
         
         _context.Entregadores.Add(entregador);
         await _context.SaveChangesAsync(cancellation);
-        return await LoginAsync(dto, cancellation);
+        return new EntregadorResponseDto
+        {
+            Id = entregador.Id,
+            Nome = entregador.Nome,
+            Telefone = entregador.Telefone,
+            veiculo = TipoDeVeiculo.Moto,
+            disponivel = Disponivel.Disponivel,
+            aviso = entregador.Aviso
+        };
         
     }
 
@@ -73,10 +91,12 @@ public sealed class EntregadorService : IEntregadorService
         }
         return new EntregadorResponseDto
         {
-            Nome = dto.Nome,
-            Telefone = dto.Telefone,
-            veiculo = dto.veiculo,
-            disponivel = dto.disponivel
+            Id = valido.Id,
+            Nome = valido.Nome,
+            Telefone = valido.Telefone,
+            veiculo = valido.veiculo,
+            disponivel = valido.disponivel,
+            IdPedido = valido.IdPedido,
         };
     }
 

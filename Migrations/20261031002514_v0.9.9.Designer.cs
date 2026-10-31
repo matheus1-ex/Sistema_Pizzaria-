@@ -11,8 +11,8 @@ using SistemaPizza.Data;
 namespace SistemaPizza.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261028020422_v.9.1")]
-    partial class v91
+    [Migration("20261031002514_v0.9.9")]
+    partial class v099
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,16 +43,15 @@ namespace SistemaPizza.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<decimal>("PrecoSubTotal")
-                        .HasColumnType("TEXT");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("TEXT")
+                        .HasComputedColumnSql("[Qtd] * [precoUnitario]");
 
                     b.Property<int>("Qtd")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("precoUnitario")
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("situacaoEntrega")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -84,6 +83,10 @@ namespace SistemaPizza.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("SenhaHash")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -92,7 +95,8 @@ namespace SistemaPizza.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("criadoEm")
+                    b.Property<string>("criadoEm")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("status")
@@ -127,7 +131,7 @@ namespace SistemaPizza.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("IdCliente")
+                    b.Property<int?>("IdCliente")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Nome")
@@ -147,7 +151,8 @@ namespace SistemaPizza.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("criadoEm")
+                    b.Property<string>("criadoEm")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("status")
@@ -180,8 +185,11 @@ namespace SistemaPizza.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("DataAtualizada")
+                    b.Property<string>("DataAtualizada")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("IdPedido")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -231,14 +239,18 @@ namespace SistemaPizza.Migrations
                     b.Property<int?>("IdEntregador")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("IdProduto")
+                        .HasColumnType("INTEGER");
+
                     b.Property<decimal>("TaxaEntrega")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("criadoEm")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("pagamento")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("pagamento")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("produtoIdProduto")
                         .HasColumnType("INTEGER");
@@ -275,9 +287,6 @@ namespace SistemaPizza.Migrations
                     b.Property<decimal>("Preco")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("clienteId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("consumo")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -300,8 +309,6 @@ namespace SistemaPizza.Migrations
 
                     b.HasIndex("Nome")
                         .IsUnique();
-
-                    b.HasIndex("clienteId");
 
                     b.ToTable("Produtos", (string)null);
                 });
@@ -335,9 +342,7 @@ namespace SistemaPizza.Migrations
                 {
                     b.HasOne("SistemaPizza.Models.Cliente", "cliente")
                         .WithMany()
-                        .HasForeignKey("IdCliente")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdCliente");
 
                     b.Navigation("cliente");
                 });
@@ -372,15 +377,6 @@ namespace SistemaPizza.Migrations
                     b.Navigation("entregador");
 
                     b.Navigation("produto");
-                });
-
-            modelBuilder.Entity("SistemaPizza.Models.Produto", b =>
-                {
-                    b.HasOne("SistemaPizza.Models.Cliente", "cliente")
-                        .WithMany()
-                        .HasForeignKey("clienteId");
-
-                    b.Navigation("cliente");
                 });
 
             modelBuilder.Entity("SistemaPizza.Models.Cliente", b =>

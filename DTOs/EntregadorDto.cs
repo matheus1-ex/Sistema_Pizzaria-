@@ -9,6 +9,8 @@ public sealed class EntregadorRequestDto
     /// Aqui é  campo do entregador (nome, disponivel ou não para entrega, status do pedido)
     /// é aqui que o entregador vai fazer seu registro as informações da tela do entregador
     /// </summary>
+    
+
     [StringLength(maximumLength: 250, ErrorMessage = "Tamanho de caracter ultrapassado.")]
     [Required(ErrorMessage = "campo obrigatório.")]
     public string Nome {get; set;} = string.Empty;
@@ -24,12 +26,20 @@ public sealed class EntregadorRequestDto
     public Disponivel disponivel {get; set;} = Disponivel.Disponivel;
 
     public StatusAtivo status {get; set;} = StatusAtivo.Ativado;
+
+    public string aviso {get; set;} = string.Empty;
 }
 
 public sealed class AtualizarEntregadorDto
 {
+    [Required(ErrorMessage = "Campo obrigatório")]
+    public string Nome {get; set;} = string.Empty;
+    public int IdPedido {get; set;}
+    public int IdCliente {get; set;}
+    public string aviso {get; set;} = string.Empty;
     public StatusPedido pedido {get; set;}
-    public Disponivel disponivel {get; set;}
+    public Disponivel disponivel {get; set;} = Disponivel.Indisponivel;
+    public StatusPedido stspedido {get; set;} = StatusPedido.Saiu_para_Entregar;
 }
 
 public sealed class EntregadorResponseDto
@@ -39,9 +49,12 @@ public sealed class EntregadorResponseDto
     /// Aqui vai receber
     /// </summary>
     public int Id {get; set;}
+    public int IdPedido {get; set;}
+    public int IdCliente {get; set;}
     public string Nome {get; set;} = string.Empty;
     public string Telefone {get; set;} = string.Empty;
+    public string aviso {get; set;} = string.Empty;
     public TipoDeVeiculo veiculo {get; set;} = TipoDeVeiculo.Moto;
     public StatusPedido statusPedido {get; set;} = StatusPedido.Nenhuma_Entrega;
-    public Disponivel disponivel {get; set;} = Disponivel.Disponivel; 
+    public Disponivel disponivel {get; set;} = Disponivel.Disponivel;
 }

@@ -2,6 +2,7 @@ using SistemaPizza.Models;
 using SistemaPizza.Data;
 using SistemaPizza.DTOs;
 using BCryptNet;
+using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 
 namespace SistemaPizza.Services;
@@ -10,6 +11,7 @@ public sealed class ClienteService : IClienteService
 {
     private readonly AppDbContext _context;
     private IConfiguration _configuration;
+    
 
     public ClienteService(AppDbContext context, IConfiguration configuration)
     {
@@ -21,15 +23,8 @@ public sealed class ClienteService : IClienteService
     //Serviço de criar uma conta
     public async Task<ClienteResponseDto> CriarAsync(ClienteDto dto, CancellationToken cancellation)
     {
-        var usuarioValido = await _context.Contas.AnyAsync(usr => usr.Email == dto.Email, cancellation);
-
-        if(usuarioValido)
-        {
-            return new ClienteResponseDto
-            {
-              status = StatusAtivo.Desativado,
-            };
-        }
+        var culturaBr = new CultureInfo("pt-BR");
+        DateTime agr = DateTime.UtcNow.AddHours(-3);
 
         string PassWordHash = BCrypt.HashPassword(dto.Senha);
 
@@ -37,49 +32,65 @@ public sealed class ClienteService : IClienteService
         {
             Nome = dto.Nome,
             Email = dto.Email,
+            Senha = dto.Senha,
             Endereco = dto.Endereco,
             Telefone = dto.Telefone,
             SenhaHash = PassWordHash,
-            criadoEm = DateTime.UtcNow,
+            criadoEm = agr.ToString("g", culturaBr),
         };
+
+        _context.Clientes.Add(novoCliente);
+        await _context.SaveChangesAsync(cancellation);
 
         var novaConta = new Conta
         {
-            Nome = dto.Nome,
-            Email = dto.Email,
-            Telefone = dto.Telefone,
-            Senha = dto.Senha,
-            Endereco = dto.Endereco,
+            IdCliente = novoCliente.Id,
+            Nome = novoCliente.Nome,
+            Email = novoCliente.Email,
+            Senha = novoCliente.Senha,
             SenhaHash = PassWordHash,
-            cliente = novoCliente
+            Endereco = novoCliente.Endereco,
+            Telefone = novoCliente.Telefone,
+            criadoEm = agr.ToString("g", culturaBr),
+
         };
 
         _context.Contas.Add(novaConta);
         await _context.SaveChangesAsync(cancellation);
-        return await LoginAsync(dto, cancellation);
+        return new ClienteResponseDto
+        {
+            Id = novoCliente.Id,
+            Nome = dto.Nome,
+            Email = dto.Email,
+            Senha = dto.Senha,
+            SenhaHash = PassWordHash,
+            Telefone = dto.Telefone,
+            Endereco = dto.Endereco,
+            IdConta = novaConta.Id,
+            criadoEm = agr.ToString("g", culturaBr)
+        };
     }
 
     //Login
-    public async Task<ClienteResponseDto> LoginAsync(ClienteDto dto, CancellationToken cancellation)
+    public async Task<LoginResponseDto> LoginAsync(LoginRequestDto login,CancellationToken cancellation)
     {
-        var usuarioLogin = await _context.Contas.Include(conta => conta.cliente).FirstOrDefaultAsync(usr => usr.Email == dto.Email, cancellation);
+        var culturaBr = new CultureInfo("pt-BR");
+        DateTime agr = DateTime.UtcNow.AddHours(-3);
+        var usuarioLogin = await _context.Contas.Include(conta => conta.cliente).FirstOrDefaultAsync(usr => usr.Email == login.Email, cancellation);
 
+        //Seo o email esta cadastrado ou não
         if (usuarioLogin == null)
         {
-            return new ClienteResponseDto
+            return new LoginResponseDto
             {
-                status = StatusAtivo.Desativado,
+                status = StatusAtivo.Desativado
             };
         }
 
-        return new ClienteResponseDto
+        return new LoginResponseDto
         {
-            Id = usuarioLogin.Id,
-            Nome = usuarioLogin.Nome,
             Email = usuarioLogin.Email,
-            SenhaHash = usuarioLogin.SenhaHash,
-            Telefone = usuarioLogin.Telefone,
-            criadoEm = usuarioLogin.criadoEm
+            Senha = usuarioLogin.Senha,
         };
 
     }

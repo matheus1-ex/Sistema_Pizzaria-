@@ -17,12 +17,12 @@ public class ContaController : ControllerBase
         _clienteService = cliente;
     }
     [HttpPost("Conta")]
-    public async  Task<ActionResult<ClienteResponseDto>> Conta(
-        [FromBody] ClienteDto dto,
+    public async  Task<ActionResult<LoginResponseDto>> Conta(
+        [FromBody] LoginRequestDto login,
         CancellationToken cancellation
     )
     {
-        var resposta = await _clienteService.LoginAsync(dto, cancellation);
+        var resposta = await _clienteService.LoginAsync(login, cancellation);
         return Ok(resposta);
     }
 

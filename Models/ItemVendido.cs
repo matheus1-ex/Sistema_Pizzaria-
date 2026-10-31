@@ -15,8 +15,6 @@ public sealed class ItemVendido
     public int IdProduto {get; set;}
     public Produto? produto {get; set;}
 
-    //relacionamento com o entregador
-    public StatusPedido situacaoEntrega {get; set;}
     public int IdEntregador {get; set;}
     public Entregador? Entregador {get; set;}
 

@@ -66,7 +66,7 @@ public sealed class AppDbContext : DbContext
                 entidade.HasIndex(delivery => delivery.Nome).IsUnique();
                 entidade.HasIndex(delivery => delivery.Telefone).IsUnique();
                 entidade.Property(delivery => delivery.veiculo).IsRequired().HasConversion<string>();
-                entidade.Property(delivery => delivery.disponivel).IsRequired().HasConversion<string>();
+                entidade.Property(delivery => delivery.disponivel).HasConversion<string>();
                 entidade.Property(delivery => delivery.status).IsRequired().HasConversion<string>();
                 entidade.Property(delivery => delivery.DataAtualizada);
             }
@@ -85,6 +85,8 @@ public sealed class AppDbContext : DbContext
 			entidade.HasIndex(product => product.Nome).IsUnique();
 			entidade.Property(product => product.Descricao).IsRequired().HasMaxLength(250);
 			entidade.Property(product => product.Preco).IsRequired();
+            entidade.Property(product => product.dataFabricado).IsRequired();
+            entidade.Property(product => product.dataValidade).IsRequired();
             entidade.Property(product => product.consumo).HasConversion<string>().IsRequired();
 			entidade.Property(product => product.status).HasConversion<string>().IsRequired();
 		}
@@ -106,6 +108,8 @@ public sealed class AppDbContext : DbContext
             entidade.HasOne(delivery => delivery.entregador)
             .WithMany()
             .HasForeignKey(deliveryId => deliveryId.IdEntregador);
+
+            entidade.Property(delivery => delivery.pagamento).HasConversion<string>().IsRequired();
 
             entidade.Property(order => order.TaxaEntrega).IsRequired();
 
@@ -136,7 +140,7 @@ public sealed class AppDbContext : DbContext
 
             ent.Property(unity => unity.precoUnitario).IsRequired();
 
-            ent.Property(total => total.PrecoSubTotal).IsRequired();
+            ent.Property(total => total.PrecoSubTotal).HasComputedColumnSql("[Qtd] * [precoUnitario]");
 
         }
     );

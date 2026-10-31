@@ -2,6 +2,7 @@ using SistemaPizza.DTOs;
 using Microsoft.EntityFrameworkCore;
 using SistemaPizza.Data;
 using SistemaPizza.Models;
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -22,20 +23,34 @@ public sealed class ProdutoService : IProdutoService
 
     public async Task<ProdutoResponseDto> CriarAsync(ProdutoRequestDto dto, CancellationToken cancellation)
     {
+        var culturaBr = new CultureInfo("pt-BR");
+
+
+        if (!DateTime.TryParseExact(dto.dataValidade, "dd/MM/yyyy HH:mm", culturaBr, DateTimeStyles.None, out var fabricado))
+        {
+            throw new BadHttpRequestException("formato inválido, o formato correto é: dia/mês/ano");
+        }
+
+        if (!DateTime.TryParseExact(dto.dataValidade, "dd/MM/yyyy HH:mm", culturaBr, DateTimeStyles.None, out var validade))
+        {
+            throw new BadHttpRequestException("formato inválido, o formato correto é: dia/mês/ano");
+        }  
+
         var produto = new Produto
         {
             Nome = dto.nome,
             Categoria = dto.categoria,
             Preco = dto.preco,
             Descricao = dto.descricao,
-            dataFabricado = dto.dataFabricado,
-            dataValidade = dto.dataValidade,
+            dataFabricado = fabricado,
+            dataValidade = validade,
         };
 
         _context.Produtos.Add(produto);
         await _context.SaveChangesAsync(cancellation);
         return new ProdutoResponseDto
         {
+            Id = produto.IdProduto,
             nome = dto.nome,
             categoria = dto.categoria,
             descricao = dto.descricao,
@@ -78,7 +93,7 @@ public sealed class ProdutoService : IProdutoService
             return null;
         }
 
-        int diasRestantes = (consumo.dataValidade - consumo.dataFabricado).Days;
+        int diasRestantes = (consumo.dataValidade.AddHours(-3) - consumo.dataFabricado.AddHours(-3)).Days;
 
         return new ProdutoConsumoDto
         {

@@ -1,3 +1,4 @@
+
 namespace SistemaPizza.Models;
 public sealed class Produto
 {
@@ -5,8 +6,6 @@ public sealed class Produto
     
     //Ou seja, cada produto tem a sua respectiva categoria
     public Categoria? Categoria {get; set;}
-
-    public Cliente? cliente {get; set;}
 
     //Dados essenciais
     public string Nome {get; set;} = string.Empty;
