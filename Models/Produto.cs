@@ -12,6 +12,10 @@ public sealed class Produto
     public string Descricao {get; set;} = string.Empty;
     public decimal Preco {get; set;}
 
+    //aqui vai receber o id do pedido na tabela DbSet
+    public int IdPedido {get; set;}
+    public ICollection<Pedido> Pedidos{get; set;} = new List<Pedido>();
+
     //Fabricado
     public DateTime dataFabricado {get; set;}
 

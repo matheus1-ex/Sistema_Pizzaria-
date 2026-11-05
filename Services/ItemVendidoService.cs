@@ -38,6 +38,8 @@ public sealed class ItemVendidoService : IItemVendidoService
             precoUnitario = dto.precoUnd,
             Qtd = dto.Quantidade,
             Observação = dto.Observação,
+            TaxaEntrega = 5.00m,
+            PrecoSubTotal = dto.precoUnd * dto.Quantidade,
         };
         _context.Vendidos.Add(itemVendido);
         await _context.SaveChangesAsync(cancellation);
@@ -48,9 +50,10 @@ public sealed class ItemVendidoService : IItemVendidoService
             IdEntregador = itemVendido.IdEntregador,
             IdProduto = itemVendido.IdProduto,
             NomeProduto = dto.NomePrduto,
-            PrecoUnd = dto.precoUnd,
-            Qtd = dto.Quantidade,
-            SubTotal = dto.precoUnd * dto.Quantidade
+            PrecoUnd = itemVendido.precoUnitario,
+            TaxaEntrega = 5.00m,
+            Qtd = itemVendido.Qtd,
+            SubTotal = itemVendido.PrecoSubTotal
         };
     }
 

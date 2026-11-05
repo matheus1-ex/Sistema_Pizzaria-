@@ -96,7 +96,6 @@ public sealed class EntregadorService : IEntregadorService
             Telefone = valido.Telefone,
             veiculo = valido.veiculo,
             disponivel = valido.disponivel,
-            IdPedido = valido.IdPedido,
         };
     }
 

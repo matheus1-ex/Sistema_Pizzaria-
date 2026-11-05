@@ -2,7 +2,7 @@ namespace SistemaPizza.Models;
 public sealed class Entregador
 {
     public int Id {get; set;}
-    public int IdPedido {get; set;}
+    public int? IdPedido {get; set;}
     public string Nome {get; set;} = string.Empty;
     public string Telefone {get; set;} = string.Empty;
     public TipoDeVeiculo veiculo {get; set;} = TipoDeVeiculo.Moto;

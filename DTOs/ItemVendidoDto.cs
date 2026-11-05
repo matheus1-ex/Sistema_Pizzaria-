@@ -25,5 +25,7 @@ public sealed class ItemVendidoResponseDto
    public int Qtd {get; set;}
    public decimal PrecoUnd {get; set;}
    public decimal SubTotal { get; set; }
+   public decimal Total {get; set;}
+   public decimal TaxaEntrega {get; set;}
 
 }

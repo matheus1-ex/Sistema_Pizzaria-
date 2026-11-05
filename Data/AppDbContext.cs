@@ -65,6 +65,9 @@ public sealed class AppDbContext : DbContext
                 entidade.HasKey(delivery => delivery.Id);
                 entidade.HasIndex(delivery => delivery.Nome).IsUnique();
                 entidade.HasIndex(delivery => delivery.Telefone).IsUnique();
+                entidade.HasOne(pedido => pedido.Pedidos)
+                .WithMany()
+                .HasForeignKey(pedidoId => pedidoId.IdPedido);
                 entidade.Property(delivery => delivery.veiculo).IsRequired().HasConversion<string>();
                 entidade.Property(delivery => delivery.disponivel).HasConversion<string>();
                 entidade.Property(delivery => delivery.status).IsRequired().HasConversion<string>();
@@ -105,10 +108,10 @@ public sealed class AppDbContext : DbContext
             .WithMany(client => client.Pedidos)
             .HasForeignKey(clientId => clientId.IdCliente);
 
-            entidade.HasOne(delivery => delivery.entregador)
-            .WithMany()
-            .HasForeignKey(deliveryId => deliveryId.IdEntregador);
-
+            entidade.HasOne(pedido => pedido.produto)
+            .WithMany(produto => produto.Pedidos)
+            .HasForeignKey(product => product.IdProduto);
+            
             entidade.Property(delivery => delivery.pagamento).HasConversion<string>().IsRequired();
 
             entidade.Property(order => order.TaxaEntrega).IsRequired();
@@ -132,6 +135,10 @@ public sealed class AppDbContext : DbContext
             .HasForeignKey(order => order.IdProduto)
             .OnDelete(DeleteBehavior.Restrict);
 
+            ent.HasOne(prdto => prdto.Entregador)
+            .WithMany()
+            .HasForeignKey(dlId => dlId.IdEntregador);
+
             ent.HasOne(sell => sell.Pedido)
             .WithMany(itens => itens.Itens)
             .HasForeignKey(i => i.IdPedido);
@@ -140,7 +147,13 @@ public sealed class AppDbContext : DbContext
 
             ent.Property(unity => unity.precoUnitario).IsRequired();
 
-            ent.Property(total => total.PrecoSubTotal).HasComputedColumnSql("[Qtd] * [precoUnitario]");
+            ent.Property(obs => obs.Observação).IsRequired();
+
+            ent.Property(subtotal => subtotal.PrecoSubTotal);
+
+            ent.Property(total => total.Total);
+
+            ent.Property(txtEntrga => txtEntrga.TaxaEntrega);
 
         }
     );

@@ -20,8 +20,12 @@ public sealed class ItemVendido
 
     public decimal precoUnitario {get; set;}
 
+    public decimal TaxaEntrega {get; set;} = 5.00m;
+    
     public string Observação {get; set;} = string.Empty;
 
     public int Qtd {get; set;}
     public decimal PrecoSubTotal {get; set;}
+
+    public decimal Total {get; set;}
 }

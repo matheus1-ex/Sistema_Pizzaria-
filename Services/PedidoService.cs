@@ -32,15 +32,29 @@ public class PedidoService : IPedidoService
     {
         var hBr = new CultureInfo("pt-BR");
         DateTime agr = DateTime.UtcNow.AddHours(-3);
+        
+        decimal taxaEntrega = 5.00m;
+
+        decimal SubTotal = dto.itens.Sum(i => i.precoUnd * i.Quantidade);
+
+        decimal TotalCompleto = SubTotal + taxaEntrega;
+
+
         var pedido = new Pedido
         {
             IdCliente = dto.IdCliente,
-            IdEntregador = dto.IdEntregador,
-            IdProduto = dto.IdProduto,
             pagamento = dto.pagamento,
-            SubTotal = dto.itens.Sum(i => i.precoUnd * i.Quantidade),
-            TaxaEntrega = 5.00m,
-            criadoEm = agr.ToString("g", hBr)
+            TaxaEntrega = taxaEntrega,
+            criadoEm = agr.ToString("g", hBr),
+            Itens = dto.itens.Select(item => new ItemVendido
+            {
+                IdProduto = item.IdProduto,
+                IdEntregador = item.IdEntregador,
+                Qtd = item.Quantidade,
+                TaxaEntrega = taxaEntrega,
+                precoUnitario = item.precoUnd,
+                PrecoSubTotal = SubTotal,
+            }).ToList(),
 
         };
 
@@ -48,19 +62,25 @@ public class PedidoService : IPedidoService
         await _context.SaveChangesAsync(cancellation);
         return new PedidoResponseDto
         {
+            Id = pedido.Id,
+            IdPedido = pedido.Id,
             IdCliente = dto.IdCliente,
+            Pagamento = dto.pagamento,
+            TaxaEntrega = pedido.TaxaEntrega,
+            ValorTotal = TotalCompleto,
+            criadoEm = agr.ToString("g", hBr),
             items = dto.itens.Select(item => new ItemVendidoResponseDto
             {
-                IdPedido = pedido.Id,
+                IdPedido = item.IdPedido,
+                IdProduto = item.IdProduto,
                 IdEntregador = item.IdEntregador,
-                IdProduto = pedido.IdProduto,
                 NomeProduto = item.NomePrduto,
                 Qtd = item.Quantidade,
                 PrecoUnd = item.precoUnd,
+                SubTotal = item.precoUnd * item.Quantidade
             
             }).ToList(),
-            Pagamento = dto.pagamento,
-            criadoEm = agr.ToString("g", hBr)
+        
 
         };
     }
