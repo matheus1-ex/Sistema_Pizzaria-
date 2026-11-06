@@ -53,7 +53,8 @@ public sealed class ItemVendidoService : IItemVendidoService
             PrecoUnd = itemVendido.precoUnitario,
             TaxaEntrega = 5.00m,
             Qtd = itemVendido.Qtd,
-            SubTotal = itemVendido.PrecoSubTotal
+            Observação = itemVendido.Observação,
+            SubTotal = itemVendido.PrecoSubTotal,
         };
     }
 

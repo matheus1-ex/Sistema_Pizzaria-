@@ -45,9 +45,6 @@ namespace SistemaPizza.Migrations
                     b.Property<decimal>("TaxaEntrega")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Total")
-                        .HasColumnType("TEXT");
-
                     b.Property<decimal>("precoUnitario")
                         .HasColumnType("TEXT");
 
@@ -231,10 +228,13 @@ namespace SistemaPizza.Migrations
                     b.Property<int?>("IdCliente")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("IdProduto")
+                    b.Property<int?>("ProdutoIdProduto")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("TaxaEntrega")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Total")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("criadoEm")
@@ -248,7 +248,7 @@ namespace SistemaPizza.Migrations
 
                     b.HasIndex("IdCliente");
 
-                    b.HasIndex("IdProduto");
+                    b.HasIndex("ProdutoIdProduto");
 
                     b.ToTable("Pedidos", (string)null);
                 });
@@ -354,13 +354,11 @@ namespace SistemaPizza.Migrations
                         .WithMany("Pedidos")
                         .HasForeignKey("IdCliente");
 
-                    b.HasOne("SistemaPizza.Models.Produto", "produto")
+                    b.HasOne("SistemaPizza.Models.Produto", null)
                         .WithMany("Pedidos")
-                        .HasForeignKey("IdProduto");
+                        .HasForeignKey("ProdutoIdProduto");
 
                     b.Navigation("cliente");
-
-                    b.Navigation("produto");
                 });
 
             modelBuilder.Entity("SistemaPizza.Models.Cliente", b =>

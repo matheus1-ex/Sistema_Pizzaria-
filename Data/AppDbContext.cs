@@ -107,14 +107,12 @@ public sealed class AppDbContext : DbContext
             entidade.HasOne(pedido => pedido.cliente)
             .WithMany(client => client.Pedidos)
             .HasForeignKey(clientId => clientId.IdCliente);
-
-            entidade.HasOne(pedido => pedido.produto)
-            .WithMany(produto => produto.Pedidos)
-            .HasForeignKey(product => product.IdProduto);
             
             entidade.Property(delivery => delivery.pagamento).HasConversion<string>().IsRequired();
 
             entidade.Property(order => order.TaxaEntrega).IsRequired();
+
+            entidade.Property(order => order.Total);
 
             entidade.Property(order => order.criadoEm);
 
@@ -150,8 +148,6 @@ public sealed class AppDbContext : DbContext
             ent.Property(obs => obs.Observação).IsRequired();
 
             ent.Property(subtotal => subtotal.PrecoSubTotal);
-
-            ent.Property(total => total.Total);
 
             ent.Property(txtEntrga => txtEntrga.TaxaEntrega);
 

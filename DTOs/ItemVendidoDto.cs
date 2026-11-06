@@ -22,6 +22,7 @@ public sealed class ItemVendidoResponseDto
     public int IdEntregador {get; set;}
    public int IdProduto {get; set;}
    public string NomeProduto {get; set;} = string.Empty;
+   public string Observação {get; set;} = string.Empty;
    public int Qtd {get; set;}
    public decimal PrecoUnd {get; set;}
    public decimal SubTotal { get; set; }

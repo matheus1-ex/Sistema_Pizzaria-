@@ -45,6 +45,7 @@ public class PedidoService : IPedidoService
             IdCliente = dto.IdCliente,
             pagamento = dto.pagamento,
             TaxaEntrega = taxaEntrega,
+            Total = TotalCompleto,
             criadoEm = agr.ToString("g", hBr),
             Itens = dto.itens.Select(item => new ItemVendido
             {
