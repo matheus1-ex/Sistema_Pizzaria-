@@ -228,9 +228,6 @@ namespace SistemaPizza.Migrations
                     b.Property<int?>("IdCliente")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ProdutoIdProduto")
-                        .HasColumnType("INTEGER");
-
                     b.Property<decimal>("TaxaEntrega")
                         .HasColumnType("TEXT");
 
@@ -248,8 +245,6 @@ namespace SistemaPizza.Migrations
 
                     b.HasIndex("IdCliente");
 
-                    b.HasIndex("ProdutoIdProduto");
-
                     b.ToTable("Pedidos", (string)null);
                 });
 
@@ -266,9 +261,6 @@ namespace SistemaPizza.Migrations
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("IdPedido")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -354,10 +346,6 @@ namespace SistemaPizza.Migrations
                         .WithMany("Pedidos")
                         .HasForeignKey("IdCliente");
 
-                    b.HasOne("SistemaPizza.Models.Produto", null)
-                        .WithMany("Pedidos")
-                        .HasForeignKey("ProdutoIdProduto");
-
                     b.Navigation("cliente");
                 });
 
@@ -373,8 +361,6 @@ namespace SistemaPizza.Migrations
 
             modelBuilder.Entity("SistemaPizza.Models.Produto", b =>
                 {
-                    b.Navigation("Pedidos");
-
                     b.Navigation("itemVendidos");
                 });
 #pragma warning restore 612, 618

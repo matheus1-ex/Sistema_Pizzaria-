@@ -24,6 +24,6 @@ public sealed class ItemVendido
     
     public string Observação {get; set;} = string.Empty;
 
-    public int Qtd {get; set;}
+    public int Quantidade {get; set;}
     public decimal PrecoSubTotal {get; set;}
 }

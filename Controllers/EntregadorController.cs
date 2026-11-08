@@ -63,7 +63,7 @@ public class EntregadorController : ControllerBase
     }
 
     //Atualizar a situação do entregador
-    [HttpPatch("{id}/status")]
+    [HttpPatch("{id:int}/atualizar")]
     public async Task<ActionResult> AtualizarDisponivel (
         [FromRoute] int id,
         [FromBody] AtualizarEntregadorDto dto,

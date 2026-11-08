@@ -24,16 +24,16 @@ public sealed class EntregadorService : IEntregadorService
         var status = await _context.Entregadores.FirstOrDefaultAsync(entregador => entregador.Id == id, cancellation);
         if (status == null)
         {
-            return new EntregadorResponseDto
-            {
-                disponivel = Disponivel.Indisponivel
-            };
+            throw new KeyNotFoundException("Entregador não encontrado...");
         }
-        status.disponivel = Disponivel.Disponivel;
+        status.IdPedido = atualizar.IdPedido;
+        status.Aviso = atualizar.aviso;
+        status.status = atualizar.statusPedido;
+        status.disponivel = atualizar.disponivel;
 
         /// Independentemente se o pedido for entrege ou não
         /// O Entregador estiver disponivel ou não  pra entrega a data sempre vai se atualziar
-        if (atualizar.pedido == StatusPedido.Entregue || atualizar.pedido == StatusPedido.Cancelado)
+        if (atualizar.statusPedido == StatusPedido.Entregue || atualizar.statusPedido == StatusPedido.Cancelado)
         {
             status.DataAtualizada = agr.ToString("g",culturaBr);
         }
@@ -42,13 +42,12 @@ public sealed class EntregadorService : IEntregadorService
         {
             status.DataAtualizada = agr.ToString("g", culturaBr);
         }
-
-        _context.Entregadores.Add(status);
         await _context.SaveChangesAsync(cancellation);
         return new EntregadorResponseDto
         {
             Id = status.Id,
-            Nome = atualizar.Nome,
+            Nome = status.Nome,
+            aviso = status.Aviso,
             disponivel = atualizar.disponivel,
         };
 

@@ -11,5 +11,5 @@ public sealed class Entregador
     public string Aviso {get; set;} = string.Empty;
     public string? DataAtualizada {get; set;}
 
-    public Pedido? Pedidos {get; set;} 
+    public Pedido? Pedidos {get; set;}
 }

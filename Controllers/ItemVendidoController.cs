@@ -32,6 +32,8 @@ public sealed class ItemVendidoController : ControllerBase
         return Ok(item);
     }
 
+
+    //Consultar pelo id se foi registrado ou não a nota
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ItemVendidoResponseDto>> Buscar (
         int id,

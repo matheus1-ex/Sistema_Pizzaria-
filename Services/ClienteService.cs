@@ -62,7 +62,6 @@ public sealed class ClienteService : IClienteService
             Id = novoCliente.Id,
             Nome = dto.Nome,
             Email = dto.Email,
-            Senha = dto.Senha,
             SenhaHash = PassWordHash,
             Telefone = dto.Telefone,
             Endereco = dto.Endereco,

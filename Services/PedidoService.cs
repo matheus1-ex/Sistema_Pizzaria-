@@ -51,8 +51,9 @@ public class PedidoService : IPedidoService
             {
                 IdProduto = item.IdProduto,
                 IdEntregador = item.IdEntregador,
-                Qtd = item.Quantidade,
+                Quantidade = item.Quantidade,
                 TaxaEntrega = taxaEntrega,
+                Observação = item.Observação,
                 precoUnitario = item.precoUnd,
                 PrecoSubTotal = SubTotal,
             }).ToList(),
@@ -64,7 +65,6 @@ public class PedidoService : IPedidoService
         return new PedidoResponseDto
         {
             Id = pedido.Id,
-            IdPedido = pedido.Id,
             IdCliente = dto.IdCliente,
             Pagamento = dto.pagamento,
             TaxaEntrega = pedido.TaxaEntrega,
@@ -72,10 +72,10 @@ public class PedidoService : IPedidoService
             criadoEm = agr.ToString("g", hBr),
             items = dto.itens.Select(item => new ItemVendidoResponseDto
             {
-                IdPedido = item.IdPedido,
                 IdProduto = item.IdProduto,
                 IdEntregador = item.IdEntregador,
                 NomeProduto = item.NomePrduto,
+                Observação = item.Observação,
                 Qtd = item.Quantidade,
                 PrecoUnd = item.precoUnd,
                 SubTotal = item.precoUnd * item.Quantidade

@@ -16,6 +16,7 @@ public class ContaController : ControllerBase
     {
         _clienteService = cliente;
     }
+    //Login
     [HttpPost("Conta")]
     public async  Task<ActionResult<LoginResponseDto>> Conta(
         [FromBody] LoginRequestDto login,
@@ -25,7 +26,7 @@ public class ContaController : ControllerBase
         var resposta = await _clienteService.LoginAsync(login, cancellation);
         return Ok(resposta);
     }
-
+    //Cadastro
     [HttpPost("Cadastro")]
     public async Task<ActionResult<ClienteResponseDto>> Registro (
         [FromBody] ClienteDto dto,

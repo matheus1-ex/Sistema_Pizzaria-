@@ -15,6 +15,11 @@ public partial class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+         builder.Services.AddCors(op =>
+         op.AddPolicy("Politica", po =>
+         po.WithOrigins("http://localhost:5011").AllowAnyHeader().AllowAnyMethod()
+         ));
+
         //Conexão com o banco de dados (Sql Server)
         string connection = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
         builder.Services.AddDbContext<AppDbContext>(options =>

@@ -33,13 +33,10 @@ public sealed class EntregadorRequestDto
 public sealed class AtualizarEntregadorDto
 {
     [Required(ErrorMessage = "Campo obrigatório")]
-    public string Nome {get; set;} = string.Empty;
     public int IdPedido {get; set;}
-    public int IdCliente {get; set;}
     public string aviso {get; set;} = string.Empty;
-    public StatusPedido pedido {get; set;}
     public Disponivel disponivel {get; set;} = Disponivel.Indisponivel;
-    public StatusPedido stspedido {get; set;} = StatusPedido.Saiu_para_Entregar;
+    public StatusPedido statusPedido {get; set;} = StatusPedido.Saiu_para_Entregar;
 }
 
 public sealed class EntregadorResponseDto
@@ -50,11 +47,10 @@ public sealed class EntregadorResponseDto
     /// </summary>
     public int Id {get; set;}
     public int IdPedido {get; set;}
-    public int IdCliente {get; set;}
     public string Nome {get; set;} = string.Empty;
     public string Telefone {get; set;} = string.Empty;
     public string aviso {get; set;} = string.Empty;
     public TipoDeVeiculo veiculo {get; set;} = TipoDeVeiculo.Moto;
-    public StatusPedido statusPedido {get; set;} = StatusPedido.Nenhuma_Entrega;
-    public Disponivel disponivel {get; set;} = Disponivel.Disponivel;
+    public StatusPedido statusPedido {get; set;}
+    public Disponivel disponivel {get; set;}
 }

@@ -63,6 +63,7 @@ public class ProdutoController : ControllerBase
     }
 
     //Remover o Produto
+    [HttpDelete("{id:int}")]
     public async Task<ActionResult> Remover(
         int id,
         CancellationToken cancellation

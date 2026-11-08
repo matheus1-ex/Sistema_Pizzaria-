@@ -69,6 +69,7 @@ public sealed class AppDbContext : DbContext
                 .WithMany()
                 .HasForeignKey(pedidoId => pedidoId.IdPedido);
                 entidade.Property(delivery => delivery.veiculo).IsRequired().HasConversion<string>();
+                entidade.Property(delivery => delivery.Aviso).IsRequired();
                 entidade.Property(delivery => delivery.disponivel).HasConversion<string>();
                 entidade.Property(delivery => delivery.status).IsRequired().HasConversion<string>();
                 entidade.Property(delivery => delivery.DataAtualizada);
@@ -141,7 +142,7 @@ public sealed class AppDbContext : DbContext
             .WithMany(itens => itens.Itens)
             .HasForeignKey(i => i.IdPedido);
 
-            ent.Property(quanty => quanty.Qtd).IsRequired();
+            ent.Property(quanty => quanty.Quantidade).IsRequired();
 
             ent.Property(unity => unity.precoUnitario).IsRequired();
 

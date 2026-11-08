@@ -36,7 +36,7 @@ public sealed class ItemVendidoService : IItemVendidoService
             IdProduto = dto.IdProduto,
             IdEntregador = dto.IdEntregador,
             precoUnitario = dto.precoUnd,
-            Qtd = dto.Quantidade,
+            Quantidade = dto.Quantidade,
             Observação = dto.Observação,
             TaxaEntrega = 5.00m,
             PrecoSubTotal = dto.precoUnd * dto.Quantidade,
@@ -46,13 +46,11 @@ public sealed class ItemVendidoService : IItemVendidoService
         return new ItemVendidoResponseDto
         {
             Id = itemVendido.Id,
-            IdPedido = itemVendido.IdPedido,
             IdEntregador = itemVendido.IdEntregador,
             IdProduto = itemVendido.IdProduto,
             NomeProduto = dto.NomePrduto,
             PrecoUnd = itemVendido.precoUnitario,
-            TaxaEntrega = 5.00m,
-            Qtd = itemVendido.Qtd,
+            Qtd = itemVendido.Quantidade,
             Observação = itemVendido.Observação,
             SubTotal = itemVendido.PrecoSubTotal,
         };
