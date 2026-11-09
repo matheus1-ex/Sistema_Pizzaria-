@@ -46,7 +46,6 @@ public sealed class ClienteResponseDto
     public string Nome {get; set;} = string.Empty;
     public string Email {get; set;} = string.Empty;
     public string? Telefone {get; set;}
-    public string SenhaHash {get; set;} = string.Empty;
     public string Endereco {get; set;} = string.Empty;
     public StatusAtivo status {get; set;} = StatusAtivo.Ativado;
     public string criadoEm {get; set;} = string.Empty;

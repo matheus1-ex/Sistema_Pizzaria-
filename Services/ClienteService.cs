@@ -62,7 +62,6 @@ public sealed class ClienteService : IClienteService
             Id = novoCliente.Id,
             Nome = dto.Nome,
             Email = dto.Email,
-            SenhaHash = PassWordHash,
             Telefone = dto.Telefone,
             Endereco = dto.Endereco,
             IdConta = novaConta.Id,
@@ -75,15 +74,12 @@ public sealed class ClienteService : IClienteService
     {
         var culturaBr = new CultureInfo("pt-BR");
         DateTime agr = DateTime.UtcNow.AddHours(-3);
-        var usuarioLogin = await _context.Contas.Include(conta => conta.cliente).FirstOrDefaultAsync(usr => usr.Email == login.Email, cancellation);
+        var usuarioLogin = await _context.Contas.Include(conta => conta.cliente).FirstOrDefaultAsync(usr => usr.Senha == login.Senha, cancellation);
 
         //Seo o email esta cadastrado ou não
         if (usuarioLogin == null)
         {
-            return new LoginResponseDto
-            {
-                status = StatusAtivo.Desativado
-            };
+            throw new Exception("Usuário inválido.");
         }
 
         return new LoginResponseDto

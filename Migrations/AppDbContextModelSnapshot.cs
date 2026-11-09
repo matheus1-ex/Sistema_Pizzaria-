@@ -39,7 +39,7 @@ namespace SistemaPizza.Migrations
                     b.Property<decimal>("PrecoSubTotal")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Qtd")
+                    b.Property<int>("Quantidade")
                         .HasColumnType("INTEGER");
 
                     b.Property<decimal>("TaxaEntrega")

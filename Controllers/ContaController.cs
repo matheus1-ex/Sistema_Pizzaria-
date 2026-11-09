@@ -4,6 +4,7 @@ using SistemaPizza.Data;
 using SistemaPizza.Models;
 using SistemaPizza.Services;
 using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace SistemaPizza.Controllers;
 [ApiController]
@@ -12,9 +13,11 @@ namespace SistemaPizza.Controllers;
 public class ContaController : ControllerBase
 {
     private readonly IClienteService _clienteService;
-    public ContaController(IClienteService cliente)
+    private readonly AppDbContext _context;
+    public ContaController(IClienteService cliente, AppDbContext conta)
     {
         _clienteService = cliente;
+        _context = conta;
     }
     //Login
     [HttpPost("Conta")]
@@ -23,8 +26,19 @@ public class ContaController : ControllerBase
         CancellationToken cancellation
     )
     {
-        var resposta = await _clienteService.LoginAsync(login, cancellation);
-        return Ok(resposta);
+        var resposta = await _context.Clientes.FirstOrDefaultAsync(c => c.Senha == login.Senha);
+        if (resposta == null)
+        {
+            return Unauthorized("email ou senha inválida...");
+        }
+
+        bool verificarHash = BCryptNet.BCrypt.Verify(login.Senha, resposta.SenhaHash);
+
+        if (!verificarHash)
+        {
+            return Unauthorized(new {mensagem = "email ou senha inválidos..."});
+        }
+        return Ok(new {mensagem = "login efetuado com sucesso!"});
     }
     //Cadastro
     [HttpPost("Cadastro")]
