@@ -49,6 +49,7 @@ public sealed class EntregadorService : IEntregadorService
             Nome = status.Nome,
             aviso = status.Aviso,
             disponivel = atualizar.disponivel,
+            statusPedido = atualizar.statusPedido,
         };
 
     }

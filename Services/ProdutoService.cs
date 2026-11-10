@@ -70,7 +70,7 @@ public sealed class ProdutoService : IProdutoService
 
     public async Task<bool> Remover(int id, CancellationToken cancellation)
     {
-        Produto? product = await _context.Produtos.FirstOrDefaultAsync
+        Produto? product = await _context.Produtos.Include(p => p.itemVendidos).FirstOrDefaultAsync
         (
             product => product.IdProduto == id
         );
@@ -79,7 +79,7 @@ public sealed class ProdutoService : IProdutoService
         {
             return false;
         }
-        _context.Produtos.Remove(product);
+        product.status = StatusAtivo.Desativado;
         await _context.SaveChangesAsync(cancellation);
         return true;
     }
